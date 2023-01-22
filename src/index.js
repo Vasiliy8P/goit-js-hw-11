@@ -24,7 +24,7 @@ function onFormSubmit(evt) {
     apiService.fetchImages().then(images => {
         if (images.hits.length === 0) {
             btnLoadMoreIsHidden();
-            Notiflix.Notify.success("Sorry, there are no images matching your search query. Please try again.")
+            Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.")
         } else {
             renderImage(images.hits);
             Notiflix.Notify.success(`Hooray! We found ${images.totalHits} images.`)
