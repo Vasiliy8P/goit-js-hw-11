@@ -15,18 +15,22 @@ btnLoadMoreIsHidden()
 formEl.addEventListener('submit', onFormSubmit);
 btnLoadMoreEl.addEventListener('click', onBtnLoadMoreClick)
 
-function onFormSubmit(evt) { 
+async function onFormSubmit(evt) { 
     evt.preventDefault();
     btnLoadMoreIsHidden()
     galleryEl.innerHTML = "";
     apiService.query = evt.currentTarget.elements.searchQuery.value.trim();
     apiService.page = 1;
-    apiService.fetchImages().then(images => {
+
+    try { 
+        const images = await apiService.fetchImages()
+
         if (images.hits.length === 0) {
             btnLoadMoreIsHidden();
             Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.")
         } else {
             renderImage(images.hits);
+
             Notiflix.Notify.success(`Hooray! We found ${images.totalHits} images.`)
 
             if (galleryEl.children.length === images.totalHits) {
@@ -36,11 +40,14 @@ function onFormSubmit(evt) {
                 btnLoadMoreRemoveIsHidden();
             }
         }          
-    });    
+    } catch (error) {
+        console.error(error);
+    }
 };
 
-function onBtnLoadMoreClick() {
-    apiService.fetchImages().then(images => {
+async function onBtnLoadMoreClick() {
+    try {
+        const images = await apiService.fetchImages()
         renderImage(images.hits);
 
         if (galleryEl.children.length === images.totalHits) {            
@@ -53,8 +60,10 @@ function onBtnLoadMoreClick() {
         window.scrollBy({
         top: cardHeight * 2,
         behavior: "smooth",
-        });
-    });
+        })
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 function renderImage(images) {
