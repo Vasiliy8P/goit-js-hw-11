@@ -47,34 +47,41 @@ function onBtnLoadMoreClick() {
             btnLoadMoreIsHidden();
             Notiflix.Notify.success("We're sorry, but you've reached the end of search results.");
         }
+
+        const { height: cardHeight } = galleryEl.firstElementChild.getBoundingClientRect();
+
+        window.scrollBy({
+        top: cardHeight * 2,
+        behavior: "smooth",
+        });
     });
 }
 
 function renderImage(images) {
     const markupImageCard = images.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => 
         `<div class="photo-card">
-  <a class="thumb" href="${largeImageURL}">
-    <img class="image" src="${webformatURL}" alt="${tags}" loading="lazy">
-  </a>
-  <div class="info">
-    <p class="info-item">
-      <b>Likes</b>
-      <span>${likes}</span>
-    </p>
-    <p class="info-item">
-      <b>Views</b>
-      <span>${views}</span>
-    </p>
-    <p class="info-item">
-      <b>Comments</b>
-      <span>${comments}</span>
-    </p>
-    <p class="info-item">
-      <b>Downloads</b>
-      <span>${downloads}</span>
-    </p>
-  </div>
-</div>`).join('');
+            <a class="thumb" href="${largeImageURL}">
+                <img class="image" src="${webformatURL}" alt="${tags}" loading="lazy">
+            </a>
+            <div class="info">
+                <p class="info-item">
+                    <b>Likes</b>
+                    <span>${likes}</span>
+                </p>
+                <p class="info-item">
+                    <b>Views</b>
+                    <span>${views}</span>
+                </p>
+                <p class="info-item">
+                    <b>Comments</b>
+                    <span>${comments}</span>
+                </p>
+                <p class="info-item">
+                    <b>Downloads</b>
+                    <span>${downloads}</span>
+                </p>
+            </div>
+        </div>`).join('');
 
     galleryEl.insertAdjacentHTML("beforeend", markupImageCard);
 
