@@ -50,7 +50,7 @@ async function onBtnLoadMoreClick() {
         const images = await apiService.fetchImages()
         renderImage(images.hits);
 
-        if (galleryEl.children.length === images.totalHits) {            
+        if (galleryEl.children.length >= images.totalHits) {            
             btnLoadMoreIsHidden();
             Notiflix.Notify.success("We're sorry, but you've reached the end of search results.");
         }
